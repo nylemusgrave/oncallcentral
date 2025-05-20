@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOrganization } from "@/contexts/OrganizationContext";
 import { Physician, Schedule } from "@shared/schema";
-import { Phone, Clock, PlusIcon } from "lucide-react";
+import { Phone, Clock, PlusIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { RequestForm } from "@/pages/RequestForm";
@@ -21,6 +21,8 @@ const OnCallPhysicians = () => {
   const orgId = currentOrganization?.id;
   const [_, navigate] = useLocation();
   const [createRequestModalOpen, setCreateRequestModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
 
   // Get current date for filtering active schedules
   const now = new Date();
@@ -102,9 +104,11 @@ const OnCallPhysicians = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {todaysSchedules.map((schedule) => {
-              const physician = getPhysicianById(schedule.physicianId);
-              return (
+            {todaysSchedules
+              .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+              .map((schedule) => {
+                const physician = getPhysicianById(schedule.physicianId);
+                return (
                 <div
                   key={schedule.id}
                   className="bg-neutral-50 p-4 rounded-lg flex items-start"
@@ -138,6 +142,28 @@ const OnCallPhysicians = () => {
               );
             })}
 
+            {todaysSchedules.length > itemsPerPage && (
+              <div className="flex justify-center gap-2 mt-4 border-t pt-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => setCurrentPage(prev => Math.min(Math.ceil(todaysSchedules.length / itemsPerPage), prev + 1))}
+                  disabled={currentPage === Math.ceil(todaysSchedules.length / itemsPerPage)}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
             <div className="mt-3">
               <Dialog open={createRequestModalOpen} onOpenChange={setCreateRequestModalOpen}>
                 <DialogTrigger asChild>
