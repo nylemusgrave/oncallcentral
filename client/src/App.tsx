@@ -25,15 +25,33 @@ function Router() {
       <Route path="/auth" component={AuthPage} />
       <ProtectedRoute path="/" component={Dashboard} />
       <ProtectedRoute path="/organizations" component={Organizations} />
-      <ProtectedRoute path="/organizations/new" component={() => <OrganizationForm isNew />} />
-      <ProtectedRoute path="/organizations/:id" component={() => <OrganizationForm isNew={false} />} />
+      <ProtectedRoute
+        path="/organizations/new"
+        component={() => <OrganizationForm isNew />}
+      />
+      <ProtectedRoute
+        path="/organizations/:id"
+        component={() => <OrganizationForm isNew={false} />}
+      />
       <ProtectedRoute path="/physicians" component={Physicians} />
-      <ProtectedRoute path="/physicians/new" component={() => <PhysicianForm isNew />} />
-      <ProtectedRoute path="/physicians/:id" component={() => <PhysicianForm isNew={false} />} />
+      <ProtectedRoute
+        path="/physicians/new"
+        component={() => <PhysicianForm isNew />}
+      />
+      <ProtectedRoute
+        path="/physicians/:id"
+        component={() => <PhysicianForm isNew={false} />}
+      />
       <ProtectedRoute path="/schedules" component={Schedules} />
       <ProtectedRoute path="/requests" component={Requests} />
-      <ProtectedRoute path="/requests/new" component={() => <RequestForm isNew />} />
-      <ProtectedRoute path="/requests/:id" component={() => <RequestForm isNew={false} />} />
+      <ProtectedRoute
+        path="/requests/new"
+        component={() => <RequestForm isNew />}
+      />
+      <ProtectedRoute
+        path="/requests/:id"
+        component={() => <RequestForm isNew={false} />}
+      />
       <ProtectedRoute path="/reports" component={Reports} />
       <ProtectedRoute path="/settings" component={Settings} />
       <Route component={NotFound} />
